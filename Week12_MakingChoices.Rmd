@@ -1,8 +1,8 @@
 ---
-title: 'Week 11: Making Choices'
+title: 'Week 12: Making Choices'
 author: "Ellen Bledsoe"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +20,8 @@ We talked about conditional statements early in the class when we talked about c
 Here are some examples below.
 
 ```{r eval=FALSE}
-
+# weight > 50
+# species == "DM"
 ```
 
 When we run these lines of code, these statements produce an output that is a generate a `"logical"` data type.
@@ -46,7 +47,8 @@ We have the "traditional" operators:
 For example:
 
 ```{r}
-
+10>=5
+10<=5
 ```
 
 There are other operators that we have not (formally) used yet, such as `%in%`. This is a very handy little operator!
@@ -54,7 +56,8 @@ There are other operators that we have not (formally) used yet, such as `%in%`. 
 It checks to see if a value is present in a vector of possible values.
 
 ```{r}
-
+"DM" %in% c("DM", "DO", "DS")
+"PP" %in% c("DM", "DO", "DS")
 ```
 
 There are also a number of functions that return these boolean data types.
@@ -62,7 +65,8 @@ There are also a number of functions that return these boolean data types.
 For example, the `is.na()` function returns `TRUE` or `FALSE` depending on whether a value is null or not.
 
 ```{r}
-
+is.na(NA)
+is.na(1)
 ```
 
 ### Reversing Conditions
@@ -72,7 +76,8 @@ When we want the opposite of a certain condition, we can use the `!` operator to
 In doing so, it reverses the boolean values that are returned (`TRUE` becomes `FALSE` and `FALSE` becomes `TRUE`).
 
 ```{r}
-
+!(10>=5)
+!is.na(c(4, NA, 76))
 ```
 
 > Work on Question 1: Choice Operators
@@ -92,13 +97,27 @@ Note that they conditional statement to be tested goes inside a parenthetical. T
 For example, let's say we have a value, `x`. If `x` is 5 or less, it can stay the way it is. However, if `x` is more than 5, we want to double it.
 
 ```{r}
+x <- 6
 
+# if statement
+if (x>5) {
+  x <- x*2
+}
+
+x
 ```
 
 What happens when the conditional statement is `FALSE`?
 
 ```{r}
+x <- 4
 
+# if statement
+if (x>5) {
+  x <- x*2
+}
+
+x
 ```
 
 As a reminder, this `if` statement is *not* a function, so everything that happens in the `if` statement influences the global environment.
@@ -108,7 +127,14 @@ Let's look at another example, this time with some character values.
 Perhaps different vegetation types require different biomass calculations.
 
 ```{r}
+veg_type <- "shrub"
+volume <- 16.08
 
+if(veg_type == "shrub"){
+  mass <- 2.64*volume^0.9
+}
+
+mass
 ```
 
 > Work on Question 2a
@@ -122,7 +148,16 @@ To do this, we can add more conditions and associated actions with `else if`.
 Let's take a look at an example.
 
 ```{r}
+veg_type <- "grass"
+volume <- 16.08
 
+if(veg_type == "shrub"){
+  mass <- 2.65*volume^0.9
+} else if (veg_type == "grass") {
+  mass <- 0.65*volume^1.2
+}
+
+mass
 ```
 
 The code above checks the first condition. If `TRUE`, it will run that condition's code and skips the rest. If `FALSE`, it will check the next one and keep going until it runs out of conditions to check.
@@ -130,7 +165,18 @@ The code above checks the first condition. If `TRUE`, it will run that condition
 We can also specify what should happen none of the conditions are `TRUE` using `else` on its own.
 
 ```{r}
+veg_type <- "tree"
+volume <- 16.08
 
+if(veg_type == "shrub"){
+  mass <- 2.65*volume^0.9
+} else if (veg_type == "grass") {
+  mass <- 0.65*volume^1.2
+} else {
+  mass <- NA
+}
+
+mass
 ```
 
 > Work on Question 2b-2c
@@ -144,13 +190,24 @@ This seems like code we would want to reuse, so it would be a good idea to creat
 We can place our entire `if`-`else` statement inside a function, making sure that the function takes all required variables as arguments.
 
 ```{r}
-
+est_mass <- function(volume, veg_type){
+  if(veg_type == "shrub"){
+    mass <- 2.65*volume^0.9
+  } else if (veg_type == "grass") {
+    mass <- 0.65*volume^1.2
+  } else {
+    mass <- NA
+  }
+  return(mass)
+}
 ```
 
 Now, we can run this function with different vegetation types and get different estimates for mass.
 
 ```{r}
-
+est_mass(1.6, "shrub")
+est_mass(1.6, "grass")
+est_mass(24, "tree")
 ```
 
 > Work on Question 2d.
@@ -162,13 +219,29 @@ Let's compare multiple `if` statements to `if`-`else if` statements.
 Multiple `if` statements are going to check each conditional separately. The code will execute for all conditions which are true.
 
 ```{r}
+x <- 5
 
+if (x>2){
+  x*2
+}
+
+if (x>4){
+  x*4
+}
+
+x
 ```
 
 On the other hand, an `else if` statement is going to check each condition sequentially. It will only execute code for the first condition which is `TRUE`.
 
 ```{r}
+x <- 5
 
+if (x>2){
+  x*2
+} else if (x>4) {
+  x*4
+}
 ```
 
 ### Nested Conditionals

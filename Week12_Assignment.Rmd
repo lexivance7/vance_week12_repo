@@ -55,14 +55,51 @@ dna2 <- "attattaggaacaca"
 Using the variables above, write code that determines whether the following statements are `TRUE` or `FALSE`.
 
 a.  `w` is greater than 10
+
 b.  `"green"` is in `colors`
+
 c.  `x` is greater than `y`
+
 d.  Each value in `masses` is greater than 40.
+
 e.  `dna1` is the same as `dna2`
+
 f.  `dna1` is not the same as `dna2`
+
 g.  `w` is greater than `x`, or `y` is greater than `z`
+
 h.  `x` times `w` is between 13.2 and 13.5
+
 i.  Each mass in `masses` is between 30 and 50.
+
+    ```{r}
+    #1a
+    w>10
+
+    #1b
+    "green" %in% colors
+
+    #1c
+    x>y
+
+    #1d
+    masses>40
+
+    #1e
+    dna1 == dna2
+
+    #1f
+    !(dna1 == dna2)
+
+    #1g
+    w>x|y>z
+
+    #1h
+    x*w>13.2 & x*w <13.5
+
+    #1i
+    masses>30 & masses<50
+    ```
 
 ### 2. If Statements (20 points)
 
@@ -70,8 +107,8 @@ a.  Complete the following `if` statement so that if `age_class` is equal to "sa
 
 ```{r}
 age_class = "sapling"
-if (){
-  
+if (age_class == "sapling"){
+  y <- 10
 }
 y
 ```
@@ -80,9 +117,12 @@ b.  Complete the following `if` statement so that if `age_class` is equal to "sa
 
 ```{r}
 age_class = "seedling"
-if (){
-  
+if (age_class == "sapling"){
+  y <- 10
+} else if (age_class == "seedling"){
+  y <- 5
 }
+
 y
 ```
 
@@ -90,23 +130,87 @@ c.  Complete the following `if` statement so that if `age_class` is equal to "sa
 
 ```{r}
 age_class = "adult"
-if (){
-  
+if (age_class == "sapling"){
+  y <- 10
+} else if (age_class == "seedling"){
+  y <- 5
+} else {
+  y <- 0
 }
 y
 ```
 
 d.  Convert your conditional statement from (c) into a function that takes `age_class` as an argument and returns `y`. Call this function 5 times, once with each of the following values for `age_class`: "sapling", "seedling", "adult", "mature", "established".
 
+    ```{r}
+    age_function <- function(age_class){
+      if (age_class == "sapling"){
+        y <- 10
+      } else if (age_class == "seedling"){
+        y <- 5
+      } else {
+        y <- 0
+      }
+      return(y)
+    }
+
+    age_function("sapling")
+    age_function("seedling")
+    age_function("adult")
+    age_function("mature")
+    age_function("established")
+    ```
+
 ### 3. If Statements in Functions (20 points)
 
 a.  Write a function named `double_if_small` that takes a number as input and returns the number multiplied by 2 if the input is less than 26 and returns just the number (not multiplied by two) if the input is greater than or equal to 26.
+
 b.  Call the function from (b) with `10` as the input.
+
 c.  Call the function from (b) with `30` as the input.
+
 d.  Write a function called `prediction` that takes a single argument `x`. If `x` is both greater than 0 and less than 15 then return `y = 6 + 0.8 * x`. If `x` is both greater than 15 and less than 30 then return `y = 5 + 0.75 * x`. In all other cases return `y = NA`.
+
 e.  Call the function from (d) with `5` as the input.
+
 f.  Call the function from (d) with `26` as the input.
+
 g.  Call the function from (d) with `-2` as the input.
+
+    ```{r}
+    #3a
+    double_if_small <- function(num){
+      if (num<26) {
+        return(num*2)
+      } else if (num>=26){
+        return(num)
+      }
+    }
+
+    #3b
+    double_if_small(10)
+
+    #3c
+    double_if_small(30)
+
+    #3d
+    prediction <- function(x){
+      if (x>0 & x<15){
+        return(y=6+0.8*x)
+      } else if (x>15 & x<30){
+        return(y=5+0.75*x)
+      } else (y=NA)
+    }
+
+    #3e
+    prediction(5)
+
+    #3f
+    prediction(26)
+
+    #3g
+    prediction(-2)
+    ```
 
 ### 4. Size Estimates by Name (20 points)
 
@@ -118,7 +222,7 @@ Remember the general form of the equation is:
 
 | mass \<- a \* length \^ b
 
-Create a new function `get_mass_from_length_by_name()` that takes two arguments: the `length` and the name of the dinosaur group. 
+Create a new function `get_mass_from_length_by_name()` that takes two arguments: the `length` and the name of the dinosaur group.
 
 Inside this function use `if`/`else if`/`else` statements to check to see if the name is one of the following values and if so use the associated `a` and `b` values to estimate the species mass using these equations:
 
@@ -128,16 +232,43 @@ Inside this function use `if`/`else if`/`else` statements to check to see if the
 
 If the name is not any of these values the function should return `NA`.
 
-Run the function for the following: 
+Run the function for the following:
 
-a.  A *Stegosauria* that is 10 meters long. 
-b.  A *Theropoda* that is 8 meters long. 
-c.  A *Sauropoda* that is 12 meters long. 
+a.  A *Stegosauria* that is 10 meters long.
+b.  A *Theropoda* that is 8 meters long.
+c.  A *Sauropoda* that is 12 meters long.
 d.  An *Ankylosauria* that is 13 meters long.
 
 *Challenge 1 (optional)*: If the name is not one of values that have a and b values print warning that it doesn’t know how to convert that group that includes that groups name in a message like “No known estimation for Ankylosauria.” You can use the function `warning("your warning text")` to print a warning and the function `paste()` to combine text with a value from a variable such as `paste("My name is", name)`. Doing this successfully will modify your answer to (d), which is fine.
 
-*Challenge 2 (optional)*: Change your function so that it uses two different values of `a` and `b` for _Stegosauria_. When _Stegosauria_ is greater than 8 meters long use the equation above. When it is less than 8 meters long, use `a = 8.5` and `b = 2.8`. Run the function for a _Stegosauria_ that is 6 meters long.
+*Challenge 2 (optional)*: Change your function so that it uses two different values of `a` and `b` for *Stegosauria*. When *Stegosauria* is greater than 8 meters long use the equation above. When it is less than 8 meters long, use `a = 8.5` and `b = 2.8`. Run the function for a *Stegosauria* that is 6 meters long.
+
+```{r}
+# Create Function
+get_mass_from_length_by_name <- function(length, name){
+  if (name == "Stegosauria"){
+    return(10.95*length^2.64)
+  } else if (name == "Theropoda"){
+    return(0.73*length^3.63)
+  } else if (name == "Sauropoda"){
+    return(214.44*length^1.46)
+  } else {
+    return(NA)
+  }
+}
+#4a
+get_mass_from_length_by_name(10, "Stegosauria")
+
+#4b
+get_mass_from_length_by_name(8, "Theropoda")
+
+#4c
+get_mass_from_length_by_name(12, "Sauropoda")
+
+#4d
+get_mass_from_length_by_name(13, "Anklyosauria")
+
+```
 
 ### 5. Using `dplyr` Choice Functions (20 points)
 
@@ -160,3 +291,11 @@ d.  Take a look at the `pie_crab` dataset from the `lterdatasampler` package by 
 e.  Now use the `case_when` function inside a `mutate` function to create a new column called `size_category3` in the `pie_crab` dataframe that meets the same conditions as (b) and (c).
 
     I've placed my new column next to the size column for the sake of the answer key; you don't need to do this.
+
+```{r}
+library(tidyverse)
+library(dplyr)
+install.packages("lterdatasampler")
+
+
+```
