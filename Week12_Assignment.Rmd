@@ -294,8 +294,34 @@ e.  Now use the `case_when` function inside a `mutate` function to create a new 
 
 ```{r}
 library(tidyverse)
-library(dplyr)
 install.packages("lterdatasampler")
+library(lterdatasampler)
 
+crab_size <- 17
 
+#5a
+if_else(crab_size>=20, "large", "small")
+
+#5b
+if_else(crab_size>=20, "large", 
+        if_else(crab_size>=10, "medium", "small"))
+
+#5c
+case_when(crab_size>=20 ~ "large",
+          crab_size>=10 ~ "medium",
+          TRUE~"small")
+
+#5d
+pie_crab <- head(pie_crab)
+
+pie_crab %>% 
+  mutate(size_category = if_else(size>=20, "large", "small"))
+
+#5e
+pie_crab %>% 
+  mutate(size_category3 = case_when(
+    size>=20 ~ "large",
+    size>=10 ~ "medium",
+    TRUE~"small"
+  ))
 ```
